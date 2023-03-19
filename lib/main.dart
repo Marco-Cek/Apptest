@@ -3,6 +3,7 @@ import 'package:apptest/utility/routes.dart';
 import 'package:apptest/utility/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:apptest/screen/registrationName.dart';
 
 void main() {
   runApp(const MyApp());

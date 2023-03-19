@@ -1,22 +1,25 @@
-import 'package:apptest/screen/registrationName.dart';
-import 'package:flutter/gestures.dart';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LogInPage extends StatefulWidget {
-  static const routeName = "login";
+class RegistrationName extends StatefulWidget {
+  static const routeName = "registration";
 
-  const LogInPage({Key? key}) : super(key: key);
+  const RegistrationName({Key? key}) : super(key: key);
 
   @override
-  State<LogInPage> createState() => _LogInPageState();
+  State<RegistrationName> createState() => _RegistrationNameState();
 }
 
-class _LogInPageState extends State<LogInPage> {
+class _RegistrationNameState extends State<RegistrationName> {
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late String name, pass;
+  late String  number;
+  late String? sex = "Male";
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class _LogInPageState extends State<LogInPage> {
                           return "il campo e richiesto";
                         }
                         if (!RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value)) {
                           return "non è un email";
                         }
@@ -74,6 +77,44 @@ class _LogInPageState extends State<LogInPage> {
                     SizedBox(
                       height: 24.h,
                     ),
+                    TextFormField(
+                      onChanged: (value) {
+                        number = value;
+                      },
+                      style: Theme.of(context).textTheme.bodyText2,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "il campo e richiesto";
+                        }
+                        if (!RegExp(
+                            r"(^(?:[+0]9)?[0-9]{10,12}$)")
+                            .hasMatch(value)) {
+                          return "non è un numero";
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Inserisci qui il tuo numero',
+                          hintText: 'Enter valid number'),
+                      //style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    SizedBox(
+                      height: 24.h,
+                    ),
+                    DropDown(
+                      onChanged: (value) {
+                        sex = value!;
+                        print;
+                      },
+                      items: const ["Male", "Female", "Other"],
+                      hint: const Text("Male"),
+                      icon: const Icon(
+                        Icons.expand_more,
+                        color: Colors.blue,
+                      ),
+
+                    ),
                     MaterialButton(
                         color: Theme.of(context).primaryColor,
                         disabledColor: Colors.yellowAccent,
@@ -95,8 +136,8 @@ class _LogInPageState extends State<LogInPage> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: <Widget>[
-                                          Text("$name $pass",style: Theme.of(context).textTheme.bodyText2,)
-                                     // name+" "+pass
+                                          Text("name: $name,\npassword: $pass,\nn. di telefono: $number,\ngenere: $sex",style: Theme.of(context).textTheme.bodyText2,)
+                                          // name+" "+pass
                                         ],
                                       ),
                                     ),
@@ -112,29 +153,6 @@ class _LogInPageState extends State<LogInPage> {
                                 });
                           }
                         }),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Center(
-                        child: RichText(
-                            text:  TextSpan(children: [
-                              const TextSpan(
-                                  text: "Non hai un account?",
-                                  style: TextStyle(color: Colors.grey)),
-                              TextSpan(
-                                  text: "Vai alla pagina di registrazione!",
-                                  style: const TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                      decorationThickness: 8,
-                                      decorationStyle: TextDecorationStyle.wavy),
-                                  recognizer: TapGestureRecognizer()
-                                ..onTap = () => Navigator.pushNamed(context, RegistrationName.routeName)
-
-                                  ),
-
-                            ], style: const TextStyle(color: Colors.yellow))),
-                      ),
-                    )
                   ],
                 ),
               ),

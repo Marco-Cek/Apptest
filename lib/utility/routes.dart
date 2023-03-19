@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screen/loginPage.dart';
+import '../screen/registrationName.dart';
 import '../screen/splasPage.dart';
 
 class RouteGenerator {
@@ -22,6 +23,12 @@ class RouteGenerator {
       case LogInPage.routeName:
         return MaterialPageRoute(
           builder: (context) => const LogInPage(),
+        );
+
+
+      case RegistrationName.routeName:
+        return MaterialPageRoute(
+          builder: (context) => const RegistrationName(),
         );
 
 
