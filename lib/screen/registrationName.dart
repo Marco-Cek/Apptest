@@ -57,6 +57,10 @@ class _RegistrationNameState extends State<RegistrationName> {
                         }
                         return null;
                       },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Inserisci qui la tua mail',
+                          hintText: 'Enter valid mail'),
                     ),
                     SizedBox(
                       height: 24.h,
@@ -73,6 +77,10 @@ class _RegistrationNameState extends State<RegistrationName> {
                         }
                         return null;
                       },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Inserisci qui la tua password',
+                          hintText: 'Enter valid psw'),
                     ),
                     SizedBox(
                       height: 24.h,
@@ -97,7 +105,6 @@ class _RegistrationNameState extends State<RegistrationName> {
                           border: OutlineInputBorder(),
                           labelText: 'Inserisci qui il tuo numero',
                           hintText: 'Enter valid number'),
-                      //style: Theme.of(context).textTheme.bodyText2,
                     ),
                     SizedBox(
                       height: 24.h,
@@ -114,6 +121,9 @@ class _RegistrationNameState extends State<RegistrationName> {
                         color: Colors.blue,
                       ),
 
+                    ),
+                    SizedBox(
+                      height: 24.h,
                     ),
                     MaterialButton(
                         color: Theme.of(context).primaryColor,
