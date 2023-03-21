@@ -15,6 +15,13 @@ class RegistrationName extends StatefulWidget {
 class _RegistrationNameState extends State<RegistrationName> {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late String name, pass;
+  late String number;
+  late String? sex = "Male";
+  late DateTime dateTime = DateTime.now();
+  String? formattedDate;
+
+
 
   dynamic _showDatePicker() {
     showDatePicker(
@@ -25,15 +32,10 @@ class _RegistrationNameState extends State<RegistrationName> {
     ).then((value) {
       setState(() {
         dateTime = value!;
+        formattedDate=DateFormat("dd-MM-yyyy").format(dateTime);
       });
     });
   }
-
-  late String name, pass;
-  late String number;
-  late String? sex = "Male";
-  late DateTime dateTime = DateTime.now();
-  String formattedDate = DateFormat("dd-MM-yyyy").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +109,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                       height: 20.h,
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.phone,
                       onChanged: (value) {
                         number = value;
                       },
@@ -129,17 +132,14 @@ class _RegistrationNameState extends State<RegistrationName> {
                     SizedBox(
                       height: 20.h,
                     ),
-                    MaterialButton(
-                      onPressed: _showDatePicker,
-                      color: Colors.blue,
-                      child: const Padding(
-                        padding: EdgeInsets.all(18),
-                        child: Text("Data di nascita",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                            )),
-                      ),
+                    TextFormField(
+                      readOnly: true,
+                      controller: TextEditingController()..text=formattedDate??"no date",
+                      onTap: _showDatePicker,
+                      style: Theme.of(context).textTheme.bodyText2,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          ),
                     ),
                     SizedBox(
                       height: 20.h,

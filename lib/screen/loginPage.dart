@@ -2,6 +2,7 @@ import 'package:apptest/screen/registrationName.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInPage extends StatefulWidget {
   static const routeName = "login";
@@ -14,13 +15,28 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey<ScaffoldState>();
 
-  late String name, pass;
+   String? name, pass;
+   bool loading=true;
+
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((share) {
+      name= share.getString("nomeSalvato");
+      loading = false;
+      setState(() {
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading?Container(color: Colors.white,
+        child: Center(child: CircularProgressIndicator(),)):Scaffold(
       key: _scaffoldKey,
       body: Padding(
         padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
@@ -39,8 +55,12 @@ class _LogInPageState extends State<LogInPage> {
                       height: 24.h,
                     ),
                     TextFormField(
-                      onChanged: (value) {
+                      decoration: InputDecoration(labelText: name),
+                      onChanged: (value) async {
+                        print("---SONO NEL ONCHENGE");
                         name = value;
+                        if(name!=null)
+                        await saveName(name!);
                       },
                       style: Theme.of(context).textTheme.bodyText2,
                       validator: (value) {
@@ -143,5 +163,10 @@ class _LogInPageState extends State<LogInPage> {
         ),
       ),
     );
+  }
+
+  Future<void> saveName(String name) async {
+    SharedPreferences share = await SharedPreferences.getInstance();
+    await share.setString("nomeSalvato", name);
   }
 }
