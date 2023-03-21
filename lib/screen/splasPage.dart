@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:apptest/screen/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,15 +13,11 @@ class Splashpage extends StatefulWidget {
 }
 
 class _SplashpageState extends State<Splashpage> {
-
-
   @override
   void initState() {
     super.initState();
     checkConfi();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +27,17 @@ class _SplashpageState extends State<Splashpage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        FlutterLogo(size: 160.h),
-        SizedBox(height: 150.h),
-        CircularProgressIndicator()
-      ],),
+          FlutterLogo(size: 160.h),
+          SizedBox(height: 150.h),
+          const CircularProgressIndicator()
+        ],
+      ),
     );
   }
 
   void checkConfi() {
-    Timer(Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, LogInPage.routeName);
     });
-
   }
 }

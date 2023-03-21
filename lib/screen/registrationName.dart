@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class RegistrationName extends StatefulWidget {
   static const routeName = "registration";
@@ -17,14 +16,36 @@ class _RegistrationNameState extends State<RegistrationName> {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  dynamic _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2099),
+    ).then((value) {
+      setState(() {
+        dateTime = value!;
+      });
+    });
+  }
+
   late String name, pass;
-  late String  number;
+  late String number;
   late String? sex = "Male";
+  late DateTime dateTime = DateTime.now();
+  String formattedDate = DateFormat("dd-MM-yyyy").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      appBar: AppBar(
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        key: _scaffoldKey,
+      ),
       body: Padding(
         padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 24.h),
         child: Container(
@@ -51,7 +72,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                           return "il campo e richiesto";
                         }
                         if (!RegExp(
-                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                r"^[a-zA-Z\d.a-zA-Z\d.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z\d]+\.[a-zA-Z]+")
                             .hasMatch(value)) {
                           return "non è un email";
                         }
@@ -63,7 +84,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                           hintText: 'Enter valid mail'),
                     ),
                     SizedBox(
-                      height: 24.h,
+                      height: 20.h,
                     ),
                     TextFormField(
                       onChanged: (value) {
@@ -83,7 +104,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                           hintText: 'Enter valid psw'),
                     ),
                     SizedBox(
-                      height: 24.h,
+                      height: 20.h,
                     ),
                     TextFormField(
                       onChanged: (value) {
@@ -94,8 +115,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                         if (value == null || value.isEmpty) {
                           return "il campo e richiesto";
                         }
-                        if (!RegExp(
-                            r"(^(?:[+0]9)?[0-9]{10,12}$)")
+                        if (!RegExp(r"(^(?:[+0]9)?[0-9]{10,12}$)")
                             .hasMatch(value)) {
                           return "non è un numero";
                         }
@@ -107,7 +127,22 @@ class _RegistrationNameState extends State<RegistrationName> {
                           hintText: 'Enter valid number'),
                     ),
                     SizedBox(
-                      height: 24.h,
+                      height: 20.h,
+                    ),
+                    MaterialButton(
+                      onPressed: _showDatePicker,
+                      color: Colors.blue,
+                      child: const Padding(
+                        padding: EdgeInsets.all(18),
+                        child: Text("Data di nascita",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
                     ),
                     DropDown(
                       onChanged: (value) {
@@ -115,21 +150,22 @@ class _RegistrationNameState extends State<RegistrationName> {
                         print;
                       },
                       items: const ["Male", "Female", "Other"],
-                      hint: const Text("Male"),
+                      hint: const Text("Sesso"),
                       icon: const Icon(
                         Icons.expand_more,
                         color: Colors.blue,
                       ),
-
                     ),
                     SizedBox(
-                      height: 24.h,
+                      height: 10.h,
                     ),
                     MaterialButton(
+                        minWidth: double.infinity,
+                        height: 40.h,
                         color: Theme.of(context).primaryColor,
                         disabledColor: Colors.yellowAccent,
                         child: const Text(
-                          "login",
+                          "Iscriviti",
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
@@ -141,12 +177,21 @@ class _RegistrationNameState extends State<RegistrationName> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     scrollable: true,
-                                    title: Text('data',style: Theme.of(context).textTheme.bodyText2,),
+                                    title: Text(
+                                      'Dati:',
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ),
                                     content: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        children: <Widget>[
-                                          Text("name: $name,\npassword: $pass,\nn. di telefono: $number,\ngenere: $sex",style: Theme.of(context).textTheme.bodyText2,)
+                                        children: [
+                                          Text(
+                                            "Mail: $name,\nPsw: $pass,\nN. telefonico: $number,\nData di nascita: $formattedDate,\nGenere: $sex",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2,
+                                          )
                                           // name+" "+pass
                                         ],
                                       ),
