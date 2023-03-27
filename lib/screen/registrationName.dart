@@ -20,8 +20,17 @@ class _RegistrationNameState extends State<RegistrationName> {
   late String? sex = "Male";
   late DateTime dateTime = DateTime.now();
   String? formattedDate;
+    String peppe="";
+
+  late TextEditingController controller;
 
 
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+    controller.text="peppe";
+  }
 
   dynamic _showDatePicker() {
     showDatePicker(
@@ -33,9 +42,13 @@ class _RegistrationNameState extends State<RegistrationName> {
       setState(() {
         dateTime = value!;
         formattedDate=DateFormat("dd-MM-yyyy").format(dateTime);
+        peppe=formattedDate ?? "--";  // formattedDate!=null ? formattedDate : "--"
       });
     });
   }
+
+  //text(perona!.email!)
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +81,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                       onChanged: (value) {
                         name = value;
                       },
+                      controller: controller,
                       style: Theme.of(context).textTheme.bodyText2,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -172,6 +186,7 @@ class _RegistrationNameState extends State<RegistrationName> {
                           if (_formKey.currentState!.validate()) {
                             //fare le operazioni se i campi ci sono
 
+                            String nome=controller.value.text;
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -216,5 +231,12 @@ class _RegistrationNameState extends State<RegistrationName> {
         ),
       ),
     );
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
   }
 }

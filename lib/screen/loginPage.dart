@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:apptest/screen/registrationName.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
 
 class LogInPage extends StatefulWidget {
   static const routeName = "login";
@@ -131,6 +135,39 @@ class _LogInPageState extends State<LogInPage> {
                                   );
                                 });
                           }
+                        }),
+                    SizedBox(
+                      height: 24.h,
+                    ),
+                    MaterialButton(
+                        color: Theme.of(context).primaryColor,
+                        disabledColor: Colors.yellowAccent,
+                        child: const Text(
+                          "api rest",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () async {
+
+
+                          https://api.zippopotam.us/us/33162
+
+                          var url =
+                          Uri.https('api.zippopotam.us',"/us/90210",);
+                          // Await the http get response, then decode the json-formatted response.
+                          var response = await http.post(url,headers: {"Content-Type":"application/json"},
+                          body:  {'name': 'doodle', 'color': 'blue'});
+
+                          if (response.statusCode == 200) {
+
+                            var body=jsonDecode(response.body);
+
+                            print(body);
+
+
+                          } else {
+                            print('Request failed with status: ${response.statusCode}.');
+                          }
+
                         }),
                     Padding(
                       padding: const EdgeInsets.only(top: 40),
